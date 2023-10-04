@@ -112,7 +112,12 @@ app.post("/api/shorturl", urlencodedParser, async function (req, res) {
   } catch (err) {
     //Failed to lookup url
     console.log(err);
-    res.status(400).json({ error: "Invalid URL" });
+
+    if (err.code == "ERR_INVALID_URL") {
+      res.status(400).json({ error: "Invalid URL" });
+    } else {
+      res.status(400).json({ error: "Invalid Hostname" });
+    }
   }
 });
 

@@ -71,7 +71,7 @@ async function lookupAsync(url) {
 function isValidUrl(url) {
   // Note: this regex specifically checks for http:// or https:// and ends with .com
   // Adjust as needed for other URL formats
-  const regex = /^https?:\/\/(?:[A-Za-z0-9\-]+\.)+[A-Za-z]{2,3}$/;
+  const regex = /^https?:\/\/(?:[A-Za-z0-9\-]+\.)+[A-Za-z]{1,}/;
   return regex.test(url);
 }
 
@@ -79,15 +79,18 @@ app.get("/", function (req, res) {
   res.sendFile(process.cwd() + "/views/index.html");
 });
 
+//Problem with this url below
+// ftp:/john-doe.invalidTLD
+
 app.post("/api/shorturl", urlencodedParser, async function (req, res) {
   //grab original url from request
   let url = req.body.url;
   debug(req.body.url);
 
   //Verify the url has a proper format with our function to verify. If not return an error
-  // if (!isValidUrl(url)) {
-  //   return res.status(400).json({ error: "Invalid URL" });
-  // }
+  if (!isValidUrl(url)) {
+    return res.status(400).json({ error: "Invalid URL" });
+  }
 
   //Use a try statement in case there is an error from the website
   try {
@@ -95,7 +98,7 @@ app.post("/api/shorturl", urlencodedParser, async function (req, res) {
     let urlObj = new URL(url);
     debug(urlObj);
     //lookup the dns with the urlObj's host name
-    const { address, family } = await lookupAsync(urlObj.hostname);
+    //const { address, family } = lookupSync(urlObj.hostname);
     //create the shhorthand url
     const shortUrl = `${req.protocol}://${req.get(
       "host"

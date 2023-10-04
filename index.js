@@ -104,9 +104,11 @@ app.post("/api/shorturl", urlencodedParser, async function (req, res) {
     urlDatabase[currentId] = url;
     debug("Writing to database: ", urlDatabase[currentId]);
     //Increment the index
+    //grab the index before we increment it so we can display it in the json response to pass the test.
+    let shortUrlIndex = currentId;
     currentId++;
     //Return json response
-    res.json({ original_url: url, short_url: shortUrl });
+    res.json({ original_url: url, short_url: shortUrlIndex });
   } catch (err) {
     //Failed to lookup url
     console.log(err);

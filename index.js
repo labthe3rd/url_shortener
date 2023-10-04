@@ -89,7 +89,7 @@ app.post("/api/shorturl", urlencodedParser, async function (req, res) {
 
   //Verify the url has a proper format with our function to verify. If not return an error
   if (!isValidUrl(url)) {
-    return res.status(400).json({ error: "Invalid URL" });
+    return res.json({ error: "Invalid URL" });
   }
 
   //Use a try statement in case there is an error from the website
@@ -115,12 +115,7 @@ app.post("/api/shorturl", urlencodedParser, async function (req, res) {
   } catch (err) {
     //Failed to lookup url
     console.log(err);
-
-    if (err.code == "ERR_INVALID_URL") {
-      res.status(400).json({ error: "Invalid URL" });
-    } else {
-      res.status(400).json({ error: "Invalid Hostname" });
-    }
+    return res.json({ error: "Invalid URL" });
   }
 });
 

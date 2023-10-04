@@ -108,7 +108,7 @@ app.post("/api/shorturl", urlencodedParser, async function (req, res) {
     let shortUrlIndex = currentId;
     currentId++;
     //Return json response
-    res.json({ original_url: url, short_url: shortUrlIndex });
+    res.json({ original_url: url, short_url: shortUrl });
   } catch (err) {
     //Failed to lookup url
     console.log(err);

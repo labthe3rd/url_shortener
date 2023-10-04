@@ -51,6 +51,7 @@ function debug(message) {
 }
 
 //Async function that looks up the DNS record of the url to verify it exists
+//This code is not being used but can be if we wanted to verify the url exists prior to allowing a link to be shortened.
 async function lookupAsync(url) {
   //Return a new promise based on the response
   return new Promise((resolve, reject) => {

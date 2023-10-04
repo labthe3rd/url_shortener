@@ -71,7 +71,7 @@ async function lookupAsync(url) {
 function isValidUrl(url) {
   // Note: this regex specifically checks for http:// or https:// and ends with .com
   // Adjust as needed for other URL formats
-  const regex = /^https?:\/\/www\.[\S]+\.com$/;
+  const regex = /^https?:\/\/www\.[\S]+\.[A-Za-z]{2,3}$/;
   return regex.test(url);
 }
 

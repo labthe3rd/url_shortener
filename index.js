@@ -67,6 +67,14 @@ async function lookupAsync(url) {
   });
 }
 
+//We will use a regex function to verify that the user input the proper address
+function isValidUrl(url) {
+  // Note: this regex specifically checks for http:// or https:// and ends with .com
+  // Adjust as needed for other URL formats
+  const regex = /^https?:\/\/www\.[\S]+\.com$/;
+  return regex.test(url);
+}
+
 app.get("/", function (req, res) {
   res.sendFile(process.cwd() + "/views/index.html");
 });
@@ -75,6 +83,11 @@ app.post("/api/shorturl", urlencodedParser, async function (req, res) {
   //grab original url from request
   let url = req.body.url;
   debug(req.body.url);
+
+  //Verify the url has a proper format with our function to verify. If not return an error
+  if (!isValidUrl(url)) {
+    return res.status(400).json({ error: "Invalid URL" });
+  }
 
   //Use a try statement in case there is an error from the website
   try {
@@ -97,7 +110,7 @@ app.post("/api/shorturl", urlencodedParser, async function (req, res) {
   } catch (err) {
     //Failed to lookup url
     console.log(err);
-    res.status(400).json({ error: "invalid url" });
+    res.status(400).json({ error: "Invalid Hostname" });
   }
 });
 
